@@ -32,8 +32,9 @@ template <typename T> inline T arm64e_pac_strip_and_sign(T &addr) {
 namespace android {
 inline void make_memory_readable(void *address, size_t size) {
 #if defined(ANDROID)
-  auto page = (void *)ALIGN_FLOOR(address, PageSize());
-  if (!SetPermission(page, PageSize(), kReadExecute)) {
+  // [DIPERBAIKI] Menambahkan OSMemory:: pada PageSize() dan SetPermission()
+  auto page = (void *)ALIGN_FLOOR(address, OSMemory::PageSize());
+  if (!OSMemory::SetPermission(page, OSMemory::PageSize(), kReadExecute)) {
     return;
   }
 #endif
